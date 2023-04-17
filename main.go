@@ -3,6 +3,9 @@ package main
 import (
 	"github.com/morgan-sinclaire/bookshop-go/handlers"
 	"github.com/gin-gonic/gin"
+	"os"
+	// "check"
+	"log"
 )
 
 func main() {
@@ -21,4 +24,9 @@ func main() {
 	router.GET("/orders/status", handlers.GetOrderStatus)
 
 	router.Run(":8080")
+
+	file, _ := os.OpenFile("bookdrop.log",
+		os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	// check(err)
+	log.SetOutput(file)
 }

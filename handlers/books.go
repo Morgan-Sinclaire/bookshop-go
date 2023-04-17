@@ -2,10 +2,12 @@ package handlers
 
 import (
 	"github.com/morgan-sinclaire/bookshop-go/db"
-	"github.com/Morgan-Sinclaire/bookshop-go/logging"
+	// "bookshop-go/logging"
 	"github.com/gin-gonic/gin"
-	// "log"
+	"log"
 )
+
+
 
 type Book struct {
 	Id     int     `json:"id"`
@@ -23,19 +25,19 @@ func CreateBook(c *gin.Context) {
 
 	if json.Title == "" {
 		c.JSON(400, gin.H{"error": "title field is required"})
-		logging.LogMessage("Error: title is required")
+		log.Println("Error: title is required")
 		return
 	}
 
 	if json.Author == "" {
 		c.JSON(400, gin.H{"error": "author field is required"})
-		logging.LogMessage("Error: author is required")
+		log.Println("Error: author is required")
 		return
 	}
 
 	if json.Price <= 0 {
 		c.JSON(400, gin.H{"error": "positive price is required"})
-		logging.LogMessage("Error: positive price is required")
+		log.Println("Error: positive price is required")
 		return
 	}
 

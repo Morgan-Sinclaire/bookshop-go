@@ -24,18 +24,12 @@ I recommend using [`httpie`](https://httpie.io) for testing of HTTP endpoints on
 First of all, this original code was missing a lot of needed "rows.Next()" lines that caused errors.
 However, as written it is safe against SQL injections. For instance, if CreateBook() were written as:
 
-database.Exec(fmt.Sprintf('
-  INSERT INTO Books (title, author, price)
-  VALUES (%s, %s, %s);
-`, title, author, price))
+database.Exec(fmt.Sprintf(`INSERT INTO Books (title, author, price) VALUES (%s, %s, %s);`, title, author, price))
 
 then anything could be inputted into the title, author, and price fields, and db.Exec() would simply run it blindly.
 However, the code instead parametrizes these fields within that function:
 
-database.Exec(`
-  INSERT INTO Books (title, author, price)
-  VALUES (?, ?, ?);
-`, title, author, price)
+database.Exec(`INSERT INTO Books (title, author, price) VALUES (?, ?, ?);`, title, author, price)
 
 When given multiple parameters, db.Exec() automatically sanitizes the optional parameters for SQL injections, or if they're simply too long.
 

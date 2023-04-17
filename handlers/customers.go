@@ -2,8 +2,9 @@ package handlers
 
 import (
 	"github.com/morgan-sinclaire/bookshop-go/db"
-	"github.com/Morgan-Sinclaire/bookshop-go/logging"
+	// "bookshop-go/logging"
 	"github.com/gin-gonic/gin"
+	"log"
 )
 
 type Customer struct {
@@ -22,13 +23,13 @@ func CreateCustomer(c *gin.Context) {
 
     if json.Name == "" {
         c.JSON(400, gin.H{"error": "name is required"})
-				logging.LogMessage("Error: name is required")
+				log.Println("Error: name is required")
         return
     }
 
 		if json.ShippingAddr == "" {
 				c.JSON(400, gin.H{"error": "shipping address is required"})
-				logging.LogMessage("Error: shipping address is required")
+				log.Println("Error: shipping address is required")
 				return
 		}
 
@@ -46,6 +47,12 @@ func UpdateCustomerAddress(c *gin.Context) {
 	if err := c.BindJSON(&json); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
+	}
+
+	if json.ShippingAddr == "" {
+			c.JSON(400, gin.H{"error": "new shipping address is required"})
+			log.Println("Error: new shipping address is required")
+			return
 	}
 
 	err := db.UpdateCustomerAddress(json.Id, json.ShippingAddr)

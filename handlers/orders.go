@@ -5,8 +5,9 @@ import (
 	"net/http"
 
 	"github.com/morgan-sinclaire/bookshop-go/db"
-	"github.com/Morgan-Sinclaire/bookshop-go/logging"
+	// "bookshop-go/logging"
 	"github.com/gin-gonic/gin"
+	"log"
 )
 
 type Order struct {
@@ -24,13 +25,13 @@ func CreateOrder(c *gin.Context) {
 
 	if json.CustomerId <= 0 {
 		c.JSON(400, gin.H{"error": "customerId must be a positive integer"})
-		logging.LogMessage("Error: customerId must be a positive integer")
+		log.Println("Error: customerId must be a positive integer")
 		return
 	}
 
 	if json.BookId <= 0 {
 		c.JSON(400, gin.H{"error": "bookId must be a positive integer"})
-		logging.LogMessage("Error: bookId must be a positive integer")
+		log.Println("Error: bookId must be a positive integer")
 		return
 	}
 
