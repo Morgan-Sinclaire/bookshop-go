@@ -1,4 +1,4 @@
-module github.com/andey-robins/bookshop-go
+module github.com/morgan-sinclaire/bookshop-go
 
 go 1.19
 

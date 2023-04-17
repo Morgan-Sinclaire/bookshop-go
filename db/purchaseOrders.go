@@ -27,6 +27,7 @@ func GetPOByContents(book, customer int) (int, error) {
 	}
 	defer rows.Close()
 	var pid int
+	rows.Next()
 	err = rows.Scan(&pid)
 	if err != nil {
 		return 0, err
@@ -46,6 +47,7 @@ func IsPOShipped(pid int) (bool, error) {
 	}
 	defer rows.Close()
 	var shipped int
+	rows.Next()
 	err = rows.Scan(&shipped)
 	if err != nil {
 		return false, err

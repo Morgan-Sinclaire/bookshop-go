@@ -1,7 +1,8 @@
 package handlers
 
 import (
-	"github.com/andey-robins/bookshop-go/db"
+	"github.com/morgan-sinclaire/bookshop-go/db"
+	"github.com/Morgan-Sinclaire/bookshop-go/logging"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,19 +14,31 @@ type Customer struct {
 }
 
 func CreateCustomer(c *gin.Context) {
-	var json Customer
-	if err := c.BindJSON(&json); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
+    var json Customer
+    if err := c.BindJSON(&json); err != nil {
+        c.JSON(400, gin.H{"error": err.Error()})
+        return
+    }
 
-	_, err := db.CreateCustomer(json.Name, json.ShippingAddr)
-	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
+    if json.Name == "" {
+        c.JSON(400, gin.H{"error": "name is required"})
+				logging.LogMessage("Error: name is required")
+        return
+    }
 
-	c.JSON(201, gin.H{"status": "success"})
+		if json.ShippingAddr == "" {
+				c.JSON(400, gin.H{"error": "shipping address is required"})
+				logging.LogMessage("Error: shipping address is required")
+				return
+		}
+
+    _, err := db.CreateCustomer(json.Name, json.ShippingAddr)
+    if err != nil {
+        c.JSON(400, gin.H{"error": err.Error()})
+        return
+    }
+
+    c.JSON(201, gin.H{"status": "success"})
 }
 
 func UpdateCustomerAddress(c *gin.Context) {

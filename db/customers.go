@@ -23,6 +23,7 @@ func GetCustomerId(name, shippingAddr string) (int, error) {
 	}
 	defer rows.Close()
 	var cid int
+	rows.Next()
 	err = rows.Scan(&cid)
 	if err != nil {
 		return 0, err
@@ -34,7 +35,7 @@ func GetCustomerAddress(cid int) (string, error) {
 	database := Connect().Db
 
 	rows, err := database.Query(`
-		SELECT (shippingAddress) 
+		SELECT (shippingAddress)
 		FROM Customers
 		WHERE id = ?;
 	`, cid)
@@ -44,6 +45,7 @@ func GetCustomerAddress(cid int) (string, error) {
 	defer rows.Close()
 
 	var addr string
+	rows.Next()
 	err = rows.Scan(&addr)
 	if err != nil {
 		return "", err
@@ -68,7 +70,7 @@ func CustomerBalance(cid int) (float32, error) {
 	database := Connect().Db
 
 	rows, err := database.Query(`
-		SELECT (accountBalance) 
+		SELECT (accountBalance)
 		FROM Customers
 		WHERE id = ?;
 	`, cid)
@@ -78,6 +80,7 @@ func CustomerBalance(cid int) (float32, error) {
 	defer rows.Close()
 
 	var balance float32
+	rows.Next()
 	err = rows.Scan(&balance)
 	if err != nil {
 		return 0, err

@@ -1,8 +1,10 @@
 package handlers
 
 import (
-	"github.com/andey-robins/bookshop-go/db"
+	"github.com/morgan-sinclaire/bookshop-go/db"
+	"github.com/Morgan-Sinclaire/bookshop-go/logging"
 	"github.com/gin-gonic/gin"
+	// "log"
 )
 
 type Book struct {
@@ -16,6 +18,24 @@ func CreateBook(c *gin.Context) {
 	var json Book
 	if err := c.BindJSON(&json); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if json.Title == "" {
+		c.JSON(400, gin.H{"error": "title field is required"})
+		logging.LogMessage("Error: title is required")
+		return
+	}
+
+	if json.Author == "" {
+		c.JSON(400, gin.H{"error": "author field is required"})
+		logging.LogMessage("Error: author is required")
+		return
+	}
+
+	if json.Price <= 0 {
+		c.JSON(400, gin.H{"error": "positive price is required"})
+		logging.LogMessage("Error: positive price is required")
 		return
 	}
 

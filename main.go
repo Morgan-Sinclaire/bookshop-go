@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/andey-robins/bookshop-go/handlers"
+	"github.com/morgan-sinclaire/bookshop-go/handlers"
 	"github.com/gin-gonic/gin"
 )
 

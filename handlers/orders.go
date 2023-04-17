@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/andey-robins/bookshop-go/db"
+	"github.com/morgan-sinclaire/bookshop-go/db"
+	"github.com/Morgan-Sinclaire/bookshop-go/logging"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,6 +22,18 @@ func CreateOrder(c *gin.Context) {
 		return
 	}
 
+	if json.CustomerId <= 0 {
+		c.JSON(400, gin.H{"error": "customerId must be a positive integer"})
+		logging.LogMessage("Error: customerId must be a positive integer")
+		return
+	}
+
+	if json.BookId <= 0 {
+		c.JSON(400, gin.H{"error": "bookId must be a positive integer"})
+		logging.LogMessage("Error: bookId must be a positive integer")
+		return
+	}
+
 	_, err := db.CreatePO(json.BookId, json.CustomerId)
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -29,6 +42,7 @@ func CreateOrder(c *gin.Context) {
 
 	c.JSON(201, gin.H{"status": "success"})
 }
+
 
 func GetShipmentStatus(c *gin.Context) {
 	var json Order
